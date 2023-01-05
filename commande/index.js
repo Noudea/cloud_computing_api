@@ -9,7 +9,7 @@ import axios from 'axios'
 const app = express()
 const port = process.env.PORT || 8000;
 
-app.use(express.json())
+app.use(express.json());
 
 //connect to database
 await connectToDatabase()
@@ -45,9 +45,8 @@ app.post('/commande', async (req,res) =>{
   console.log(client, plats, prix)
 
   plats = await Promise.all(plats.map(async plat => {
-    console.log(plat)
-    const _plat = await axios.get(`${process.env.RECETTE_URL}/recette/:${plat.id}`)
-    //const _plat = await axios.get(`https://random-data-api.com/api/v2/beers`)
+    //const _plat = await axios.get(`${process.env.RECETTE_URL}/recette/:${plat.id}`)
+    const _plat = await axios.get(`https://random-data-api.com/api/v2/beers`)
     return {
       recette : _plat.data,
       quantity : plat.quantity
