@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+
+  commande_api:
+    image: arm64v8/node:16
+    container_name: commande_api
+    volumes:
+      - ./commande:/commande
+    working_dir: /commande
+    ports:
+      - "8000:8000"
+    command: bash -c "yarn install && yarn dev"
+    networks:
+      - cloud_computing_network
+
+  commande_mongodb:
+    container_name: commande_mongodb
+    image: arm64v8/mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./command/database/mongo:/data/db
+      - ./commande/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: admin
+    networks:
+      - cloud_computing_network
+
+networks:
+  cloud_computing_network:
+
