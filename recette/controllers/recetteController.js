@@ -95,6 +95,32 @@ exports.recette_create_post = (req, res) => {
   })
 }
 
+
+/**
+ * UPDATE Single POST
+ * @param id
+ */
+exports.recette_update_post = (req, res) => {
+  Recette.findById(req.params.id, (error, recette) => {
+  if (error) {
+      res.send(error);
+  } else {
+      recette.name = req.body.name;
+      recette.temps = req.body.temps;
+      recette.howto = req.body.howto;
+      recette.ingredients = req.body.ingredients;
+
+      recette.save((error) => {
+      if (error) {
+          res.send(error);
+      } else {
+          res.json({ message: "Recette updated successfully" });
+      }
+      });
+  }
+  });
+}
+
 /**
  * DELETE Single POST
  * @param id
