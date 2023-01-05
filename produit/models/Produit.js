@@ -2,16 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const RecetteSchema = new Schema({
+const ProduitSchema = new Schema({
     id: ObjectId,
     name: String,
-    temps: String,
-    howto: String,
-    ingredients: Array
+    price: String,
+    stock: Number,
 }
 ,{
     timestamps: true
-}
-)
+})
 
-module.exports = mongoose.model('Recette', RecetteSchema);
+module.exports = mongoose.model('Produit', ProduitSchema);
