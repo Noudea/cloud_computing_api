@@ -1,7 +1,7 @@
+import express from 'express'
+import commandeRoutes from './commande/index.js'
 
-//
-// const router = (app) = {
-//   app.use('/commande',commandeRoutes)
-// }
-//
-// export default router;
+const router = express.Router()
+router.use('/', commandeRoutes)
+
+export default router;
