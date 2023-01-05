@@ -20,7 +20,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ./command/database/mongo:/data/db
+      - ./commande/database/mongo:/data/db
       - ./commande/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
