@@ -56,6 +56,33 @@ services:
     networks:
       - cloud_computing_network
 
+  produit_api:
+    image: arm64v8/node:16
+    container_name: produit_api
+    volumes:
+      - ./produit:/produit
+    working_dir: /produit
+    ports:
+      - "8002:8002"
+    command: bash -c "yarn install && yarn start"
+    networks:
+      - cloud_computing_network
+
+  produit_mongodb:
+    container_name: produit_mongodb
+    image: arm64v8/mongo:latest
+    ports:
+      - "27019:27017"
+    volumes:
+      - ./produit/database/mongo:/data/db
+      - ./produit/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: admin
+    networks:
+      - cloud_computing_network
+
 networks:
   cloud_computing_network:
 
