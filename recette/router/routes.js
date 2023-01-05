@@ -4,6 +4,8 @@ const router = express.Router()
 
 const recette_controller = require("../controllers/recetteController")
 
+router.get("/", recette_controller.index)
+
 router.get("/recette/(:id)", recette_controller.recette_get_post)
 
 router.get("/recette", recette_controller.recette_get_all_post)

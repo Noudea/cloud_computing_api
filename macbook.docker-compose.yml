@@ -29,6 +29,33 @@ services:
     networks:
       - cloud_computing_network
 
+  recette_api:
+    image: arm64v8/node:16
+    container_name: recette_api
+    volumes:
+      - ./recette:/recette
+    working_dir: /recette
+    ports:
+      - "8001:8001"
+    command: bash -c "yarn install && yarn start"
+    networks:
+      - cloud_computing_network
+
+  recette_mongodb:
+    container_name: recette_mongodb
+    image: arm64v8/mongo:latest
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./recette/database/mongo:/data/db
+      - ./recette/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: admin
+    networks:
+      - cloud_computing_network
+
 networks:
   cloud_computing_network:
 

@@ -3,6 +3,10 @@ const Recette = require("../models/Recette")
 const axios = require('axios')
 
 
+exports.index = (req, res) => {
+  res.send("Hello from Recipes API");
+}
+
 /**
  * GET Single POST
  * @param id
