@@ -15,9 +15,9 @@ exports.recette_get_post = (req, res) => {
     Recette.findById(req.params.id, (err, recette) => {
       const requests = []
       const urlList = []
+      
 
-
-      Recette.findById(req.params.id, (err, recette) => {
+      Recette.findById(req.params.id, async (err, recette) => {
 
         if(!err){
 
@@ -25,29 +25,15 @@ exports.recette_get_post = (req, res) => {
             urlList.push(process.env.API_INGREDIENT+el)
           });
 
-          urlList.forEach(url => {
-            requests.push(axios.get(url))
-          });
-
-          const data = []
-
-          axios.all(requests)
-          .then(function(){
-            const responses = Array.prototype.slice.call(arguments)
-            axios.spread.apply(null, responses)
-            .then(function() {
-              data = Array.prototype.slice.call(arguments)
-            })
-            .catch(error => {
-              res.send(error)
-            })
+          const ingredients = await Promise.all( urlList.map( async (el) => {
+            const res = await axios.get(el)
+            return res.data
           })
-          .catch(error => {
-            res.send(error)
-          })
+          )
 
+          recette.ingredients = ingredients
           res.status(200);
-          res.send({"recette" : recette, "ingredients": data});
+          res.send({recette});
         }
         else{
           res.status(400);
