@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development && nodemon index.js"
+    "start": "NODE_ENV=development && nodemon index.js"
   },
   "dependencies": {
     "dotenv": "^16.0.3",

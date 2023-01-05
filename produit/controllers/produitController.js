@@ -1,9 +1,5 @@
 const Produit = require("../models/Produit");
 
-const axios = require('axios');
-
-
-
 exports.index = (req, res) => {
   res.send("Hello from Products API");
 }
