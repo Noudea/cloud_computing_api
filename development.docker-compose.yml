@@ -1,0 +1,94 @@
+version: '3'
+
+services:
+
+  commande_api:
+    image: node:16
+    container_name: commande_api
+    volumes:
+      - ./commande:/commande
+    working_dir: /commande
+    ports:
+      - "8000:8000"
+    command: bash -c "yarn install && yarn dev"
+    depends_on:
+      - commande_mongodb
+    networks:
+      - cloud_computing_network
+
+  commande_mongodb:
+    container_name: commande_mongodb
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./commande/database/mongo:/data/db
+      - ./commande/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: admin
+    networks:
+      - cloud_computing_network
+
+  recette_api:
+    image: node:16
+    container_name: recette_api
+    volumes:
+      - ./recette:/recette
+    working_dir: /recette
+    ports:
+      - "8001:8001"
+    command: bash -c "yarn install && yarn start"
+    depends_on:
+      - recette_mongodb
+    networks:
+      - cloud_computing_network
+
+  recette_mongodb:
+    container_name: recette_mongodb
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./recette/database/mongo:/data/db
+      - ./recette/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: admin
+    networks:
+      - cloud_computing_network
+
+  produit_api:
+    image: node:16
+    container_name: produit_api
+    volumes:
+      - ./produit:/produit
+    working_dir: /produit
+    ports:
+      - "8002:8002"
+    command: bash -c "yarn install && yarn start"
+    depends_on:
+      - produit_mongodb
+    networks:
+      - cloud_computing_network
+
+  produit_mongodb:
+    container_name: produit_mongodb
+    image: mongo:latest
+    ports:
+      - "27019:27017"
+    volumes:
+      - ./produit/database/mongo:/data/db
+      - ./produit/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: admin
+    networks:
+      - cloud_computing_network
+
+networks:
+  cloud_computing_network:
+
