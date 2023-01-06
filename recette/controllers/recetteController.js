@@ -12,12 +12,8 @@ exports.index = (req, res) => {
  * @param id
  */
 exports.recette_get_post = (req, res) => {
-    Recette.findById(req.params.id, (err, recette) => {
-      const requests = []
+    Recette.findById(req.params.id, async (err, recette) => {
       const urlList = []
-      
-
-      Recette.findById(req.params.id, async (err, recette) => {
 
         if(!err){
 
@@ -39,7 +35,6 @@ exports.recette_get_post = (req, res) => {
           res.status(400);
           res.send({"error": "No recipe found", "message": err.message})
         }
-      })
     });
 }
 
@@ -48,8 +43,26 @@ exports.recette_get_post = (req, res) => {
  * GET ALL POSTS
  */
 exports.recette_get_all_post = (req, res) => {
-    Recette.find({}, (err, recettes) => {
+    Recette.find({}, async (err, recettes) => {
+      
         if(!err){
+
+          recettes.forEach( async (rec) => {
+
+            const urlList = []
+
+            rec.ingredients.forEach(el => {
+              urlList.push(process.env.API_INGREDIENT+el)
+            });
+  
+            const ingredients = await Promise.all( urlList.map( async (el) => {
+              const res = await axios.get(el)
+              return res.data
+            })
+            )
+  
+            recettes.ingredients = ingredients
+          })
           res.status(200);
           res.send(recettes);
         }
